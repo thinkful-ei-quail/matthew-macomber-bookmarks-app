@@ -12,7 +12,7 @@ const addBookmark = bookmark => {
 };
 
 const findAndUpdate = (id, newData) => {
-  const bookmark - this.findById(id);
+  const bookmark = this.findById(id);
   Object.assign(bookmark, newData);
 };
 
