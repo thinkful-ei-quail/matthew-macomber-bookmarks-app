@@ -161,6 +161,7 @@ const handleCreateSubmit = () => {
     api.createBookmark(formatedBookmark)
       .then((bookmark) => {
         store.addBookmark(bookmark);
+        store.adding = false;
         render();
       })
       .catch((error) => {
@@ -179,9 +180,9 @@ const handleDeleteBookmarkClicked = () => {};
 const handleEditBookmarkClicked = () => {};
 
 const handleViewBookmarkClick = () => {
-  $('li').on('click', event => {
+  $('li').on('click', 'li', event => {
     event.preventDefault();
-    console.log('bookmark clicked on');
+    alert('li clicked.');
   });
 };
 
