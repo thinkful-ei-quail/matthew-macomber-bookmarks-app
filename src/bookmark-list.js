@@ -4,6 +4,15 @@ import store from './store';
 import api from './api';
 import bookmark from './bookmark';
 
+$.fn.extend({
+  serializeJson: function () {
+    const formData = new FormData(this[0]);
+    const o = {};
+    formData.forEach((val, name) => o[name] = val);
+    return o;
+  }
+});
+
 const generateBookmarkElement = bookmark => {
   console.log('generateBookmarkElement Run.');
   if (bookmark.expanded){
@@ -14,10 +23,10 @@ const generateBookmarkElement = bookmark => {
 };
 
 const generateClosedBookmarkElement = bookmark => {
-  console.log('generateClosedBookmarkElement Run.');
   let rating = '<span>★</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>';
   return `
-    <li class="js-bookmark-element" data-item-id="${bookmark.id}">
+    <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
+      <div>${bookmark.title}</div>
       <div class="rating">
         ${rating}
       </div>
@@ -26,20 +35,33 @@ const generateClosedBookmarkElement = bookmark => {
 };
 
 const generateOpenBookmarkElement = bookmark => {
-  console.log('generateOpenBookmarkElement Run.');
   return '<li>this is a open element placeholder</li>';
 };
 
 const generateCreateBookmarkElement = () => {
-  console.log('generateCreateBookmarkElement Run.');
   return `
     <label for="newURL">Add New Bookmark</label>
     <input type="url" name="newURL" id="newURL" placeholder="http://example.com"/>
-    <input type="text" name="newTitle" id="newTitle" placeholder="My Title Example"/>
-    <p>Star Rating Placeholder<p>
+    <input type="text" name="newTitle" id="newTitle" placeholder="My Example Title"/>
+    <fieldset>
+      <span class="star-cb-group">
+        <input type="radio" id="rating-5" name="newRating" value="5"/>
+        <label for="rating-5">5</label>
+        <input type="radio" id="rating-4" name="newRating" value="4"/>
+        <label for="rating-4">4</label>
+        <input type="radio" id="rating-3" name="newRating" value="3"/>
+        <label for="rating-3">3</label>
+        <input type="radio" id="rating-2" name="newRating" value="2"/>
+        <label for="rating-2">2</label>
+        <input type="radio" id="rating-1" name="newRating" value="1" checked="checked"/>
+        <label for="rating-1">1</label>
+        <input type="radio" id="rating-0" name="newRating" value="0" class="star-cb-clear"/>
+        <label for="rating-0">0</label>
+      </span>
+    </fieldset>
     <textarea name="newDesc" id="newDesc" placeholder="Add a description (optional)"/></textarea>
     <input type="submit" name="cancel" id="cancel" value="Cancel"/>
-    <input type="submit" name="create" id="create" valure="Create"/>
+    <input type="submit" name="create" id="create" value="Create"/>
   `;
 };
 
@@ -116,24 +138,60 @@ const handleNewBookmarkSubmit = () => {
 };
 
 const handleCancelButton = () => {
-  $('#js-new-bookmark-form').on('submit', '#cancel', even => {
+  $('#js-new-bookmark-form').on('click', '#cancel', event => {
     event.preventDefault();
     console.log('Cancle button clicked');
+    store.adding = false;
+    render();
   });
 };
 
-const handleCreateSubmit = () => {};
+const handleCreateSubmit = () => {
+  $('#js-new-bookmark-form').on('click', '#create', event => {
+    event.preventDefault();
+    console.log('Create button clicked');
+    const newBookmark = $('#js-new-bookmark-form').serializeJson();
+    // newBookmark object format: {"newURL":"http://www.google.com","newTitle":"My Awsome Google Titleasd","newDesc":"asdfasdfsdfs"}
+    const formatedBookmark = {
+      'title' : newBookmark['newTitle'],
+      'url' : newBookmark['newURL'],
+      'desc' : newBookmark['newDesc'],
+      'rating' : parseInt(newBookmark['newRating'])
+    };
+    api.createBookmark(formatedBookmark)
+      .then((bookmark) => {
+        store.addBookmark(bookmark);
+        render();
+      })
+      .catch((error) => {
+        store.setError(error.message);
+        renderError();
+      });
+  });
+};
 
-const getBookmarkIdFromElement = bookmark => {};
+const getBookmarkIdFromElement = bookmark => {
+  return $(bookmark).closest('.js-bookmark-element').data('bookmark-id');
+};
 
 const handleDeleteBookmarkClicked = () => {};
 
 const handleEditBookmarkClicked = () => {};
 
+const handleViewBookmarkClick = () => {
+  $('li').on('click', event => {
+    event.preventDefault();
+    console.log('bookmark clicked on');
+  });
+};
+
 const bindEventListeners = () => {
   handleNewBookmarkSubmit();
   handleEditBookmarkClicked();
   handleDeleteBookmarkClicked();
+  handleCancelButton();
+  handleCreateSubmit();
+  handleViewBookmarkClick();
   handleCloseError();
 };
 

@@ -23,22 +23,22 @@ const listApiFetch = function (...args) {
     });
 };
 
-function getItems() {
+function getBookmarks() {
   return listApiFetch(`${BASE_URL}/bookmarks`);
 }
 
-function createItem(name) {
-  const newItem = JSON.stringify({name});
+function createBookmark(bookmark) {
+  const newBookmark = JSON.stringify(bookmark);
   return listApiFetch(`${BASE_URL}/bookmarks`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: newItem
+    body: newBookmark
   });
 }
 
-function updateItem(id, updateData) {
+function updateBookmark(id, updateData) {
   const newItem = JSON.stringify(updateData);
   return listApiFetch(`${BASE_URL}/bookmarks/${id}`, {
     method: 'PATCH',
@@ -49,15 +49,15 @@ function updateItem(id, updateData) {
   });
 }
 
-function deleteItem(id) {
+function deleteBookmark(id) {
   return listApiFetch(BASE_URL + '/items/' + id, {
     method: 'DELETE'
   });
 }
 
 export default {
-  getItems,
-  createItem,
-  updateItem,
-  deleteItem
+  getBookmarks,
+  createBookmark,
+  updateBookmark,
+  deleteBookmark
 };

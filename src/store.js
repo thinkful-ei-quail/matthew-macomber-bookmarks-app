@@ -7,8 +7,8 @@ const findById = id => {
   return this.bookmarks.find(currentBookmark => currentBookmark.id === id);
 };
 
-const addBookmark = bookmark => {
-  this.bookmarks.push(bookmark);
+const addBookmark = newBookmark => {
+  bookmarks.push(newBookmark);
 };
 
 const findAndUpdate = (id, newData) => {
@@ -27,9 +27,11 @@ const setError = error => {
 export default {
   bookmarks,
   error,
+  adding,
+  filter,
   findById,
   addBookmark,
   findAndUpdate,
   findAndDelete,
   setError
-}
+};
