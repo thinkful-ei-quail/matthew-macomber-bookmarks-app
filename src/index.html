@@ -13,7 +13,8 @@
             <h1>My Bookmarks</h1>
         </header>
         <section>
-            <form>
+            <form id="js-bookmark-list-form">
+                <div class="error-container">Error!</div>
                 <input type="submit" value="+ New"/>
                 <select name="Filter By" id="filter">
                     <option value="" selected disabled hidden>Filter By</option>
@@ -24,7 +25,7 @@
             </form>
         </section>
         <section>
-            <ul>
+            <ul class="js-bookmarks-list">
                 <li>
                     <h3>Title 3</h3>
                     <div class="rating">

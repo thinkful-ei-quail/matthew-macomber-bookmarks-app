@@ -4,6 +4,10 @@ const validateName = name => {
   if (!name) throw new TypeError('Name cannot be blank.');
 };
 
+const validateUrl = url => {
+  if (!url) throw new TypeError('URL cannot be blank.');
+};
+
 const create = (name, rating, url, desc) => {
   return {
     id : cuid(),
@@ -13,9 +17,10 @@ const create = (name, rating, url, desc) => {
     description : desc,
     expanded : false
   };
-0};
+};
 
 export default {
   validateName,
+  validateUrl,
   create
 };
