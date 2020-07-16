@@ -57,11 +57,11 @@ const generateOpenBookmarkElement = bookmark => {
       </button>
     </section>
     <div class="open-bookmark-url">
-      <a href="${bookmark.url}"><button>Visit Site</button></a><span style="font-size:100%;color:blue;">${bookmark.rating}&bigstar;</span>
+      <a href="${bookmark.url}"><button>Visit Site</button></a><span>${bookmark.rating}&bigstar;</span>
     </div>
-    <div>
+    <div class="open-bookmark-desc">
       ${bookmark.desc}
-    </div
+    </div>
   </li>
   `;
 };
@@ -279,6 +279,7 @@ const handleViewBookmarkClick = () => {
   $('#js-bookmarks-list').on('click', 'li', event => {
     const bookmarkID = getBookmarkIdFromElement(event.target);
     const currentBookmark = store.findById(bookmarkID);
+    store.closeAllBookmarks();
     if (!currentBookmark.expanded) {
       currentBookmark.expanded = true;
       render();

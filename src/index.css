@@ -51,8 +51,11 @@ body {
   flex-direction: column;
 }
 
-.new-bookmark-form input {
+.new-bookmark-form > input {
   margin-top: 10px;
+  border: 5px solid black;
+  box-sizing: border-box;
+  height: 2em;
 }
 
 .new-bookmark-form > label {
@@ -64,6 +67,9 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  border: 5px solid black;
+  box-sizing: border-box;
+  margin-top: 10px;
 }
 
 .new-bookmark-form .newRating-form #ratingLabel {
@@ -84,6 +90,19 @@ body {
   width: 30%;
   height: 50%;
   box-sizing: border-box;
+}
+
+.new-bookmark-form textarea {
+  border: 5px solid black;
+  box-sizing: border-box;
+  margin-top: 10px;
+  height: 15em;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.new-bookmark-form .form-buttons #create {
+  background-color: lightblue;
 }
 
 section {
@@ -173,6 +192,7 @@ ul li {
 
 .open-bookmark {
   padding: 0;
+  overflow: scroll;
 }
 
 .open-bookmark-title-bar {
@@ -180,6 +200,28 @@ ul li {
   flex-direction: row;
   justify-content: space-between;
   background-color: lightgray;
+}
+
+.open-bookmark .open-bookmark-url {
+  display: flex;
+  display: row;
+  justify-content: space-evenly;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.open-bookmark-url button {
+  height: 2em;
+  width: 10em;
+}
+
+.open-bookmark-url span {
+  font-size: 1.5em;
+  color:blue;
+}
+
+.open-bookmark .open-bookmark-desc {
+  height: 5em;
 }
 
 /* Trash Can button styling */
@@ -211,9 +253,6 @@ ul li {
     }
     h1 {
       font-size: 80px;
-    }
-    li {
-      flex-direction: row;
     }
   }
   

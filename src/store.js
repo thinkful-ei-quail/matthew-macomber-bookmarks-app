@@ -27,6 +27,10 @@ const setError = newError => {
   return error;
 };
 
+const closeAllBookmarks = () => {
+  bookmarks.map(bookmark => bookmark.expanded = false);
+};
+
 export default {
   bookmarks,
   error,
@@ -37,5 +41,6 @@ export default {
   addBookmark,
   findAndUpdate,
   findAndDelete,
-  setError
+  setError,
+  closeAllBookmarks
 };
