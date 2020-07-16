@@ -30,7 +30,6 @@
   "dependencies": {
     "cuid": "^2.1.6",
     "jquery": "^3.5.1",
-    "konami-code": "^0.3.0",
     "normalize.css": "^8.0.1",
     "w3-css": "^4.1.0"
   }
