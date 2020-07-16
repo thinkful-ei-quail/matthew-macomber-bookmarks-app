@@ -44,7 +44,7 @@ const generateOpenBookmarkElement = bookmark => {
       </button>
     </section>
     <div class="open-bookmark-url">
-      <a href="${bookmark.url}"><button>Visit Site</button></a>
+      <a href="${bookmark.url}"><button>Visit Site</button></a><span style="font-size:100%;color:blue;">${bookmark.rating}&bigstar;</span>
     </div>
     <div>
       ${bookmark.desc}
