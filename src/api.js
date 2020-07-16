@@ -1,5 +1,5 @@
-const BASE_URL = 'https://thinkful-list-api.herokuapp.com/matthewmacomber';
-
+const BASE_URL = 'https://thinkful-list-api.herokuapp.com/';
+let user = 'matthewmacomber';
 
 const listApiFetch = function (...args) {
   let error;
@@ -24,12 +24,12 @@ const listApiFetch = function (...args) {
 };
 
 function getBookmarks() {
-  return listApiFetch(`${BASE_URL}/bookmarks`);
+  return listApiFetch(`${BASE_URL}${user}/bookmarks`);
 }
 
 function createBookmark(bookmark) {
   const newBookmark = JSON.stringify(bookmark);
-  return listApiFetch(`${BASE_URL}/bookmarks`, {
+  return listApiFetch(`${BASE_URL}${user}/bookmarks`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ function createBookmark(bookmark) {
 
 function updateBookmark(id, updateData) {
   const newItem = JSON.stringify(updateData);
-  return listApiFetch(`${BASE_URL}/bookmarks/${id}`, {
+  return listApiFetch(`${BASE_URL}${user}/bookmarks/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -50,14 +50,22 @@ function updateBookmark(id, updateData) {
 }
 
 function deleteBookmark(id) {
-  return listApiFetch(BASE_URL + '/bookmarks/' + id, {
+  return listApiFetch(`${BASE_URL}${user}/bookmarks/${id}`, {
     method: 'DELETE'
   });
+}
+
+function changeUser(newUser) {
+  user = newUser;
+  this.user = user;
+  return user;
 }
 
 export default {
   getBookmarks,
   createBookmark,
   updateBookmark,
-  deleteBookmark
+  deleteBookmark,
+  changeUser,
+  user
 };

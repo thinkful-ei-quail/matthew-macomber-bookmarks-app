@@ -4,6 +4,8 @@ import './index.css';
 import api from './api';
 import store from './store';
 import bookmarkList from './bookmark-list';
+import special from './special';
+
 
 const main = () => {
   api.getBookmarks()
@@ -14,6 +16,9 @@ const main = () => {
 
   bookmarkList.bindEventListeners();
   bookmarkList.render();
+  special.special();
 };
+
+
 
 $(main);
