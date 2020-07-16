@@ -17,13 +17,13 @@ const findAndUpdate = (id, newData) => {
 };
 
 const findAndDelete = id => {
-  console.log('Find and Delete ID: ' + id);
   bookmarks = bookmarks.filter(currentBookmark => currentBookmark.id !== id);
   return bookmarks;
 };
 
-const setError = error => {
-  this.error = error;
+const setError = newError => {
+  error = newError;
+  return error;
 };
 
 export default {

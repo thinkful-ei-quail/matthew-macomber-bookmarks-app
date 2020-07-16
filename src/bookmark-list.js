@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 /* eslint-disable no-console */
 import $ from 'jquery';
 import store from './store';
@@ -23,7 +24,20 @@ const generateBookmarkElement = bookmark => {
 };
 
 const generateClosedBookmarkElement = bookmark => {
-  let rating = '<span>★</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>';
+  let starOne = '☆',starTwo = '☆',starThree = '☆',starFour = '☆',starFive = '☆';
+  switch(bookmark.rating) {
+  case 5:
+    starFive = '★';
+  case 4:
+    starFour = '★';
+  case 3:
+    starThree = '★';
+  case 2:
+    starTwo = '★';
+  case 1:
+    starOne = '★';
+  }
+  let rating = `${starOne} ${starTwo} ${starThree} ${starFour} ${starFive}`;
   return `
     <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
       <div>${bookmark.title}</div>
@@ -109,8 +123,9 @@ const generateError = message => {
 };
 
 const renderError = () => {
-  console.log('renderError Run.');
+  console.log(store.error);
   if (store.error) {
+    console.log('Rendering error.');
     const errorElement = generateError(store.error);
     $('.error-container').html(errorElement);
   } else {
@@ -119,9 +134,10 @@ const renderError = () => {
 };
 
 const handleCloseError = () => {
-  $('.error-container').on('click', '#close-error', () => {
+  $('.error-container').on('click', '#close-error', event => {
+    event.preventDefault();
     console.log('handleCloseError Run.');
-    store.setError(null);
+    store.error = store.setError(null);
     renderError();
   });
 };
@@ -167,22 +183,30 @@ const handleCreateSubmit = () => {
     console.log('Create button clicked');
     const newBookmark = $('#js-new-bookmark-form').serializeJson();
     // newBookmark object format: {"newURL":"http://www.google.com","newTitle":"My Awsome Google Titleasd","newDesc":"asdfasdfsdfs"}
-    const formatedBookmark = {
-      'title' : newBookmark['newTitle'],
-      'url' : newBookmark['newURL'],
-      'desc' : newBookmark['newDesc'],
-      'rating' : parseInt(newBookmark['newRating'])
-    };
-    api.createBookmark(formatedBookmark)
-      .then(bookmark => {
-        store.addBookmark(bookmark);
-        store.adding = false;
-        render();
-      })
-      .catch(error => {
-        store.setError(error.message);
-        renderError();
-      });
+    try {
+      bookmark.validateName(newBookmark['newTitle']);
+      bookmark.validateUrl(newBookmark['newURL']);
+      const formatedBookmark = {
+        'title' : newBookmark['newTitle'],
+        'url' : newBookmark['newURL'],
+        'desc' : newBookmark['newDesc'],
+        'rating' : parseInt(newBookmark['newRating'])
+      };
+      api.createBookmark(formatedBookmark)
+        .then(bookmark => {
+          console.log('adding bookmark to store');
+          store.addBookmark(bookmark);
+          store.adding = false;
+          render();
+        })
+        .catch(error => {
+          new Error(error.message);
+        });
+    } catch (error) {
+      console.log(error);
+      store.error = store.setError(error.message);
+      renderError();
+    }
   });
 };
 
@@ -203,7 +227,7 @@ const handleDeleteBookmarkClicked = () => {
         render();
       })
       .catch(error => {
-        store.setError(error.message);
+        store.error = store.setError(error.message);
         renderError();
       });
   });
