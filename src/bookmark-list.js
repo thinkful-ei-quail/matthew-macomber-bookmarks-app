@@ -35,7 +35,22 @@ const generateClosedBookmarkElement = bookmark => {
 };
 
 const generateOpenBookmarkElement = bookmark => {
-  return '<li>this is a open element placeholder</li>';
+  return `
+  <li class="js-bookmark-element open-bookmark" data-bookmark-id="${bookmark.id}">
+    <section class="open-bookmark-title-bar">
+      <div>${bookmark.title}</div>
+      <button class="js-delete-button btn">
+        🗑
+      </button>
+    </section>
+    <div class="open-bookmark-url">
+      <a href="${bookmark.url}"><button>Visit Site</button></a>
+    </div>
+    <div>
+      ${bookmark.desc}
+    </div
+  </li>
+  `;
 };
 
 const generateCreateBookmarkElement = () => {
@@ -159,12 +174,12 @@ const handleCreateSubmit = () => {
       'rating' : parseInt(newBookmark['newRating'])
     };
     api.createBookmark(formatedBookmark)
-      .then((bookmark) => {
+      .then(bookmark => {
         store.addBookmark(bookmark);
         store.adding = false;
         render();
       })
-      .catch((error) => {
+      .catch(error => {
         store.setError(error.message);
         renderError();
       });
@@ -175,7 +190,24 @@ const getBookmarkIdFromElement = bookmark => {
   return $(bookmark).closest('.js-bookmark-element').data('bookmark-id');
 };
 
-const handleDeleteBookmarkClicked = () => {};
+const handleDeleteBookmarkClicked = () => {
+  $('.js-bookmarks-list').on('click', '.js-delete-button', event => {
+    console.log('Delete bookmark button clicked.');
+    const bookmarkID = getBookmarkIdFromElement(event.target);
+    console.log(bookmarkID);
+    api.deleteBookmark(bookmarkID)
+      .then(() => {
+        store.bookmarks = store.findAndDelete(bookmarkID);
+        console.log('deleted then rendering');
+        console.log(store.bookmarks);
+        render();
+      })
+      .catch(error => {
+        store.setError(error.message);
+        renderError();
+      });
+  });
+};
 
 const handleEditBookmarkClicked = () => {};
 
@@ -184,9 +216,11 @@ const handleViewBookmarkClick = () => {
     console.log('Bookmark item clicked');
     const bookmarkID = getBookmarkIdFromElement(event.target);
     const currentBookmark = store.findById(bookmarkID);
-    console.log(currentBookmark);
-    currentBookmark.expanded = true;
-    render();
+    if (!currentBookmark.expanded) {
+      console.log(currentBookmark);
+      currentBookmark.expanded = true;
+      render();
+    }
   });
 };
 

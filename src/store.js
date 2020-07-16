@@ -1,4 +1,4 @@
-const bookmarks = [];
+let bookmarks = [];
 let adding = false;
 let error = null;
 let filter = 0;
@@ -17,7 +17,9 @@ const findAndUpdate = (id, newData) => {
 };
 
 const findAndDelete = id => {
-  this.bookmarks = this.bookmarks.filter(currentBookmark => currentBookmark.id !== id);
+  console.log('Find and Delete ID: ' + id);
+  bookmarks = bookmarks.filter(currentBookmark => currentBookmark.id !== id);
+  return bookmarks;
 };
 
 const setError = error => {

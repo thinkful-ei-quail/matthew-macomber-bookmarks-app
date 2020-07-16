@@ -50,7 +50,7 @@ function updateBookmark(id, updateData) {
 }
 
 function deleteBookmark(id) {
-  return listApiFetch(BASE_URL + '/items/' + id, {
+  return listApiFetch(BASE_URL + '/bookmarks/' + id, {
     method: 'DELETE'
   });
 }
