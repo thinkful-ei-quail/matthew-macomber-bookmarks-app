@@ -71,25 +71,30 @@ const generateCreateBookmarkElement = () => {
     <label for="newURL">Add New Bookmark</label>
     <input type="url" name="newURL" id="newURL" placeholder="http://example.com"/>
     <input type="text" name="newTitle" id="newTitle" placeholder="My Example Title"/>
-    <fieldset>
-      <span class="star-cb-group">
-        <input type="radio" id="rating-5" name="newRating" value="5"/>
-        <label for="rating-5">5</label>
-        <input type="radio" id="rating-4" name="newRating" value="4"/>
-        <label for="rating-4">4</label>
-        <input type="radio" id="rating-3" name="newRating" value="3"/>
-        <label for="rating-3">3</label>
-        <input type="radio" id="rating-2" name="newRating" value="2"/>
-        <label for="rating-2">2</label>
-        <input type="radio" id="rating-1" name="newRating" value="1" checked="checked"/>
-        <label for="rating-1">1</label>
-        <input type="radio" id="rating-0" name="newRating" value="0" class="star-cb-clear"/>
-        <label for="rating-0">0</label>
-      </span>
-    </fieldset>
+    <div class="newRating-form">
+      <label id="ratingLabel" for="newRating">Rating:</label>
+      <fieldset>
+        <span class="star-cb-group">
+          <input type="radio" id="rating-5" name="newRating" value="5"/>
+          <label for="rating-5">5</label>
+          <input type="radio" id="rating-4" name="newRating" value="4"/>
+          <label for="rating-4">4</label>
+          <input type="radio" id="rating-3" name="newRating" value="3"/>
+          <label for="rating-3">3</label>
+          <input type="radio" id="rating-2" name="newRating" value="2"/>
+          <label for="rating-2">2</label>
+          <input type="radio" id="rating-1" name="newRating" value="1" checked="checked"/>
+          <label for="rating-1">1</label>
+          <input type="radio" id="rating-0" name="newRating" value="0" class="star-cb-clear"/>
+          <label for="rating-0">0</label>
+        </span>
+      </fieldset>
+    </div>
     <textarea name="newDesc" id="newDesc" placeholder="Add a description (optional)"/></textarea>
-    <input type="submit" name="cancel" id="cancel" value="Cancel"/>
-    <input type="submit" name="create" id="create" value="Create"/>
+    <div class="form-buttons">
+      <input type="submit" name="cancel" id="cancel" value="Cancel"/>
+      <input type="submit" name="create" id="create" value="Create"/>
+    </div>
   `;
 };
 
@@ -193,14 +198,14 @@ const render = () => {
     $('#js-bookmark-list-form').empty();
     store.filter = 0;
     renderFilterForm();
-    $('.js-bookmarks-list').empty();
+    $('#js-bookmarks-list').empty();
   } else {
     let bookmarks = [...store.bookmarks];
     const bookmarksListHtml = generateBookmarksHtml(bookmarks);
     $('#js-new-bookmark-form').empty();
     $('#js-bookmark-list-form').html(generateBookmarkListForm());
     renderFilterForm();
-    $('.js-bookmarks-list').html(bookmarksListHtml);
+    $('#js-bookmarks-list').html(bookmarksListHtml);
   }
 };
 
@@ -256,7 +261,7 @@ const getBookmarkIdFromElement = bookmark => {
 };
 
 const handleDeleteBookmarkClicked = () => {
-  $('.js-bookmarks-list').on('click', '.js-delete-button', event => {
+  $('#js-bookmarks-list').on('click', '.js-delete-button', event => {
     const bookmarkID = getBookmarkIdFromElement(event.target);
     api.deleteBookmark(bookmarkID)
       .then(() => {
@@ -271,7 +276,7 @@ const handleDeleteBookmarkClicked = () => {
 };
 
 const handleViewBookmarkClick = () => {
-  $('.js-bookmarks-list').on('click', 'li', event => {
+  $('#js-bookmarks-list').on('click', 'li', event => {
     const bookmarkID = getBookmarkIdFromElement(event.target);
     const currentBookmark = store.findById(bookmarkID);
     if (!currentBookmark.expanded) {
@@ -282,7 +287,7 @@ const handleViewBookmarkClick = () => {
 };
 
 const handleFilterSelected = () => {
-  $('#js-bookmark-list-form').change(event => {
+  $('#js-bookmark-list-form').change(() => {
     store.filter = 1;
     render();
   });

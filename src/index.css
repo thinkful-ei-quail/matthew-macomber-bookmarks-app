@@ -18,8 +18,72 @@ body {
     width: 85%;
     margin: 0 auto;
     font-weight: bolder;
-    margin-top: 15%;
+    margin-top: 5%;
     font-size: 3em;
+    display: flex;
+    flex-direction: column;
+}
+
+.standards {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.bookmark-list-form {
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.bookmark-list-form input, .bookmark-list-form select{
+  width: 100%;
+  height: 2em;
+  box-sizing: border-box;
+}
+
+.bookmarks-list {
+  width: 100%;
+  padding: 0;
+}
+
+.new-bookmark-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-bookmark-form input {
+  margin-top: 10px;
+}
+
+.new-bookmark-form > label {
+  vertical-align: center;
+  text-align: center;
+}
+
+.new-bookmark-form .newRating-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.new-bookmark-form .newRating-form #ratingLabel {
+  vertical-align: center;
+  text-align: center;
+  margin: auto;
+}
+
+.new-bookmark-form .form-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 1em;
+  height: 4em;
+}
+
+.new-bookmark-form .form-buttons input {
+  width: 30%;
+  height: 50%;
+  box-sizing: border-box;
 }
 
 section {
@@ -42,6 +106,7 @@ li {
     flex-direction: column;
     padding: 1em;
     border: 5px solid rgb(7, 5, 5);
+    margin-bottom: 15px;
 }
 
 li > h3 {
