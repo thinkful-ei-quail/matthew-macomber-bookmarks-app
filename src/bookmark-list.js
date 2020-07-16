@@ -15,7 +15,6 @@ $.fn.extend({
 });
 
 const generateBookmarkElement = bookmark => {
-  console.log('generateBookmarkElement Run.');
   if (bookmark.expanded){
     return generateOpenBookmarkElement(bookmark);
   } else {
@@ -94,26 +93,64 @@ const generateCreateBookmarkElement = () => {
   `;
 };
 
+const generateFilterForm= () => {
+  let starOne, starTwo, starThree, starFour, starFive;
+  starOne, starTwo, starThree, starFour, starFive = '';
+  switch(store.filterRating)
+  {
+  case 1:
+    starOne = ' checked="checked"';
+    break;
+  case 2:
+    starTwo = ' checked="checked"';
+    break;
+  case 3:
+    starThree = ' checked="checked"';
+    break;
+  case 4:
+    starFour = ' checked="checked"';
+    break;
+  case 5:
+    starFive = ' checked="checked"';
+    break;
+  }
+  return `
+    <fieldset>
+      <span class="star-cb-group">
+        <input type="radio" id="rating-5" name="filterRating" value="5"${starFive}/>
+        <label for="rating-5">5</label>
+        <input type="radio" id="rating-4" name="filterRating" value="4"${starFour}/>
+        <label for="rating-4">4</label>
+        <input type="radio" id="rating-3" name="filterRating" value="3"${starThree}/>
+        <label for="rating-3">3</label>
+        <input type="radio" id="rating-2" name="filterRating" value="2"${starTwo}/>
+        <label for="rating-2">2</label>
+        <input type="radio" id="rating-1" name="filterRating" value="1"${starOne}/>
+        <label for="rating-1">1</label>
+        <input type="radio" id="rating-0" name="filterRating" value="0" class="star-cb-clear"/>
+        <label for="rating-0">0</label>
+      </span>
+    </fieldset>
+  `;
+};
+
 const generateBookmarkListForm = () => {
   return `
-    <input type="submit" value="+ New"/>
+    <input type="submit" name="New Bookmark" value="+ New"/>
     <select name="Filter By" id="filter">
         <option value="" selected disabled hidden>Filter By</option>
-        <option value="name">Name</option>
-        <option value="rating">Rating</option>
-        <option value="date">Date Added</option>
+        <option value="rating">Minimum Rating</option>
     </select>
   `;
 };
 
 const generateBookmarksHtml = bookmarkList => {
-  console.log('generateBookmarkHhml Run.');
-  const bookmarks = bookmarkList.map(bookmark => generateBookmarkElement(bookmark));
+  const filteredBookmarkList = bookmarkList.filter(bookmark => bookmark.rating >= store.filterRating);
+  const bookmarks = filteredBookmarkList.map(bookmark => generateBookmarkElement(bookmark));
   return bookmarks.join('');
 };
 
 const generateError = message => {
-  console.log('generateError Run.');
   return `
     <section class="error-content">
       ${message}
@@ -123,9 +160,7 @@ const generateError = message => {
 };
 
 const renderError = () => {
-  console.log(store.error);
   if (store.error) {
-    console.log('Rendering error.');
     const errorElement = generateError(store.error);
     $('.error-container').html(errorElement);
   } else {
@@ -136,26 +171,35 @@ const renderError = () => {
 const handleCloseError = () => {
   $('.error-container').on('click', '#close-error', event => {
     event.preventDefault();
-    console.log('handleCloseError Run.');
     store.error = store.setError(null);
     renderError();
   });
 };
 
+const renderFilterForm = () => {
+  if (store.filter === 1) {
+    $('#js-bookmark-filter-form').html(generateFilterForm());
+  } else {
+    $('#js-bookmark-filter-form').empty();
+  }
+};
+
 const render = () => {
-  console.log('render Run.');
   // Check for and render errors before other rendering.
   renderError();
 
   if (store.adding) {
     $('#js-new-bookmark-form').html(generateCreateBookmarkElement());
     $('#js-bookmark-list-form').empty();
+    store.filter = 0;
+    renderFilterForm();
     $('.js-bookmarks-list').empty();
   } else {
     let bookmarks = [...store.bookmarks];
     const bookmarksListHtml = generateBookmarksHtml(bookmarks);
     $('#js-new-bookmark-form').empty();
     $('#js-bookmark-list-form').html(generateBookmarkListForm());
+    renderFilterForm();
     $('.js-bookmarks-list').html(bookmarksListHtml);
   }
 };
@@ -180,7 +224,6 @@ const handleCancelButton = () => {
 const handleCreateSubmit = () => {
   $('#js-new-bookmark-form').on('click', '#create', event => {
     event.preventDefault();
-    console.log('Create button clicked');
     const newBookmark = $('#js-new-bookmark-form').serializeJson();
     // newBookmark object format: {"newURL":"http://www.google.com","newTitle":"My Awsome Google Titleasd","newDesc":"asdfasdfsdfs"}
     try {
@@ -194,7 +237,6 @@ const handleCreateSubmit = () => {
       };
       api.createBookmark(formatedBookmark)
         .then(bookmark => {
-          console.log('adding bookmark to store');
           store.addBookmark(bookmark);
           store.adding = false;
           render();
@@ -203,7 +245,6 @@ const handleCreateSubmit = () => {
           new Error(error.message);
         });
     } catch (error) {
-      console.log(error);
       store.error = store.setError(error.message);
       renderError();
     }
@@ -216,14 +257,10 @@ const getBookmarkIdFromElement = bookmark => {
 
 const handleDeleteBookmarkClicked = () => {
   $('.js-bookmarks-list').on('click', '.js-delete-button', event => {
-    console.log('Delete bookmark button clicked.');
     const bookmarkID = getBookmarkIdFromElement(event.target);
-    console.log(bookmarkID);
     api.deleteBookmark(bookmarkID)
       .then(() => {
         store.bookmarks = store.findAndDelete(bookmarkID);
-        console.log('deleted then rendering');
-        console.log(store.bookmarks);
         render();
       })
       .catch(error => {
@@ -233,20 +270,32 @@ const handleDeleteBookmarkClicked = () => {
   });
 };
 
-const handleEditBookmarkClicked = () => {};
-
 const handleViewBookmarkClick = () => {
   $('.js-bookmarks-list').on('click', 'li', event => {
-    console.log('Bookmark item clicked');
     const bookmarkID = getBookmarkIdFromElement(event.target);
     const currentBookmark = store.findById(bookmarkID);
     if (!currentBookmark.expanded) {
-      console.log(currentBookmark);
       currentBookmark.expanded = true;
       render();
     }
   });
 };
+
+const handleFilterSelected = () => {
+  $('#js-bookmark-list-form').change(event => {
+    store.filter = 1;
+    render();
+  });
+};
+
+const handleFilterByRating = () => {
+  $('#js-bookmark-filter-form').on('click', 'input', event => {
+    store.filterRating = parseInt($(event.target).val());
+    render();
+  });
+};
+
+const handleEditBookmarkClicked = () => {};
 
 const bindEventListeners = () => {
   handleNewBookmarkSubmit();
@@ -256,6 +305,8 @@ const bindEventListeners = () => {
   handleCreateSubmit();
   handleViewBookmarkClick();
   handleCloseError();
+  handleFilterSelected();
+  handleFilterByRating ();
 };
 
 export default {

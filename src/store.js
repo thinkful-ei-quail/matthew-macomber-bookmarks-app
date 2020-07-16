@@ -2,6 +2,7 @@ let bookmarks = [];
 let adding = false;
 let error = null;
 let filter = 0;
+let filterRating = 1;
 
 const findById = id => {
   return bookmarks.find(currentBookmark => currentBookmark.id === id);
@@ -31,6 +32,7 @@ export default {
   error,
   adding,
   filter,
+  filterRating,
   findById,
   addBookmark,
   findAndUpdate,
