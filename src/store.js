@@ -4,7 +4,7 @@ let error = null;
 let filter = 0;
 
 const findById = id => {
-  return this.bookmarks.find(currentBookmark => currentBookmark.id === id);
+  return bookmarks.find(currentBookmark => currentBookmark.id === id);
 };
 
 const addBookmark = newBookmark => {

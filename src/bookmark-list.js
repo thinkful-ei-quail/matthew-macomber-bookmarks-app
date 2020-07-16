@@ -180,9 +180,13 @@ const handleDeleteBookmarkClicked = () => {};
 const handleEditBookmarkClicked = () => {};
 
 const handleViewBookmarkClick = () => {
-  $('li').on('click', 'li', event => {
-    event.preventDefault();
-    alert('li clicked.');
+  $('.js-bookmarks-list').on('click', 'li', event => {
+    console.log('Bookmark item clicked');
+    const bookmarkID = getBookmarkIdFromElement(event.target);
+    const currentBookmark = store.findById(bookmarkID);
+    console.log(currentBookmark);
+    currentBookmark.expanded = true;
+    render();
   });
 };
 

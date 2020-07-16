@@ -48,6 +48,10 @@ li > h3 {
     margin: 0%;
 }
 
+ul li {
+  cursor: pointer;
+}
+
 .star-cb-group {
   /* remove inline-block whitespace */
   font-size: 0;
