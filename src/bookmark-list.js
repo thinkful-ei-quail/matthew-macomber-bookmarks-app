@@ -26,19 +26,19 @@ const generateClosedBookmarkElement = bookmark => {
   let starOne = '☆',starTwo = '☆',starThree = '☆',starFour = '☆',starFive = '☆';
   switch(bookmark.rating) {
   case 5:
-    starFive = '★';
+    starFive = '<span class="filledStar">★</span>';
   case 4:
-    starFour = '★';
+    starFour = '<span class="filledStar">★</span>';
   case 3:
-    starThree = '★';
+    starThree = '<span class="filledStar">★</span>';
   case 2:
-    starTwo = '★';
+    starTwo = '<span class="filledStar">★</span>';
   case 1:
-    starOne = '★';
+    starOne = '<span class="filledStar">★</span>';
   }
   let rating = `${starOne} ${starTwo} ${starThree} ${starFour} ${starFive}`;
   return `
-    <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
+    <li class="js-bookmark-element closed-bookmark" data-bookmark-id="${bookmark.id}">
       <div>${bookmark.title}</div>
       <div class="rating">
         ${rating}
@@ -120,22 +120,25 @@ const generateFilterForm= () => {
     break;
   }
   return `
-    <fieldset>
-      <span class="star-cb-group">
-        <input type="radio" id="rating-5" name="filterRating" value="5"${starFive}/>
-        <label for="rating-5">5</label>
-        <input type="radio" id="rating-4" name="filterRating" value="4"${starFour}/>
-        <label for="rating-4">4</label>
-        <input type="radio" id="rating-3" name="filterRating" value="3"${starThree}/>
-        <label for="rating-3">3</label>
-        <input type="radio" id="rating-2" name="filterRating" value="2"${starTwo}/>
-        <label for="rating-2">2</label>
-        <input type="radio" id="rating-1" name="filterRating" value="1"${starOne}/>
-        <label for="rating-1">1</label>
-        <input type="radio" id="rating-0" name="filterRating" value="0" class="star-cb-clear"/>
-        <label for="rating-0">0</label>
-      </span>
-    </fieldset>
+    <div>
+      <div>Min Rating:</div>
+      <fieldset>
+        <span class="star-cb-group">
+          <input type="radio" id="rating-5" name="filterRating" value="5"${starFive}/>
+          <label for="rating-5">5</label>
+          <input type="radio" id="rating-4" name="filterRating" value="4"${starFour}/>
+          <label for="rating-4">4</label>
+          <input type="radio" id="rating-3" name="filterRating" value="3"${starThree}/>
+          <label for="rating-3">3</label>
+          <input type="radio" id="rating-2" name="filterRating" value="2"${starTwo}/>
+          <label for="rating-2">2</label>
+          <input type="radio" id="rating-1" name="filterRating" value="1"${starOne}/>
+          <label for="rating-1">1</label>
+          <input type="radio" id="rating-0" name="filterRating" value="0" class="star-cb-clear"/>
+          <label for="rating-0">0</label>
+        </span>
+      </fieldset>
+    </div>
   `;
 };
 

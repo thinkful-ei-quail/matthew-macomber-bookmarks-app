@@ -48,6 +48,10 @@ body {
   padding: 0;
 }
 
+.filledStar {
+  color: #EE5522;
+}
+
 .new-bookmark-form {
   display: flex;
   flex-direction: column;
@@ -105,6 +109,17 @@ body {
 
 .new-bookmark-form .form-buttons #create {
   background-color: lightblue;
+}
+
+.bookmark-list-form > select > option {
+  font-size: 0.3em;
+}
+
+.bookmark-filter-form div fieldset {
+  border-style: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
 }
 
 section {
@@ -264,12 +279,13 @@ ul li {
 .ratingNum {
   z-index: 1;
   font-size: 3rem;
-  color: red;
+  color: black;
   padding-top: 8px;
 }
 
 .ratingStar {
   font-size: 9rem;
+  color: #EE5522;
 }
 
 
@@ -277,12 +293,61 @@ ul li {
   .container {
     max-width: 600px;
   }
+
   body {
-    margin-top: 2%;
+    margin-top: 0;
+    padding-top: 0;
     font-size : 25px;
+    width: 50%;
   }
+
   h1 {
     font-size: 80px;
+  }
+
+  .bookmark-list-form > select > option {
+    font-size: 1em;
+  }
+
+  .bookmark-filter-form div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    box-sizing: border-box;
+    height: 60px;
+  }
+
+  .bookmark-filter-form > div > div {
+    justify-content: center;
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 0;
+    margin: 0;
+  }
+
+  .bookmark-filter-form div fieldset .star-cb-group *  {
+    font-size: 3rem;
+  }
+
+  .closed-bookmark {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .open-bookmark {
+    flex-direction: column;
+  }
+
+  .open-bookmark-title-bar > div {
+    font-size: 1.25em;
+  }
+  
+  .ratingNum {
+    font-size: 2rem;
+  }
+  
+  .ratingStar {
+    font-size: 6rem;
   }
 }
   
