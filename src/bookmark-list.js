@@ -4,6 +4,7 @@ import store from './store';
 import api from './api';
 import bookmark from './bookmark';
 
+// Helper functions.
 $.fn.extend({
   serializeJson: function () {
     const formData = new FormData(this[0]);
@@ -13,6 +14,11 @@ $.fn.extend({
   }
 });
 
+const getBookmarkIdFromElement = bookmark => {
+  return $(bookmark).closest('.js-bookmark-element').data('bookmark-id');
+};
+
+// Functions to generate HTML for rendering.
 const generateBookmarkElement = bookmark => {
   if (bookmark.expanded){
     return generateOpenBookmarkElement(bookmark);
@@ -166,6 +172,7 @@ const generateError = message => {
   `;
 };
 
+// Functions to handle rendering to the DOM.
 const renderError = () => {
   if (store.error) {
     const errorElement = generateError(store.error);
@@ -173,14 +180,6 @@ const renderError = () => {
   } else {
     $('.error-container').empty();
   }
-};
-
-const handleCloseError = () => {
-  $('.error-container').on('click', '#close-error', event => {
-    event.preventDefault();
-    store.error = store.setError(null);
-    renderError();
-  });
 };
 
 const renderFilterForm = () => {
@@ -209,6 +208,15 @@ const render = () => {
     renderFilterForm();
     $('#js-bookmarks-list').html(bookmarksListHtml);
   }
+};
+
+// Funtions to handle user interation.
+const handleCloseError = () => {
+  $('.error-container').on('click', '#close-error', event => {
+    event.preventDefault();
+    store.error = store.setError(null);
+    renderError();
+  });
 };
 
 const handleNewBookmarkSubmit = () => {
@@ -255,10 +263,6 @@ const handleCreateSubmit = () => {
       renderError();
     }
   });
-};
-
-const getBookmarkIdFromElement = bookmark => {
-  return $(bookmark).closest('.js-bookmark-element').data('bookmark-id');
 };
 
 const handleDeleteBookmarkClicked = () => {
