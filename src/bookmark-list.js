@@ -1,5 +1,4 @@
 /* eslint-disable no-fallthrough */
-/* eslint-disable no-console */
 import $ from 'jquery';
 import store from './store';
 import api from './api';
@@ -223,7 +222,6 @@ const handleNewBookmarkSubmit = () => {
 const handleCancelButton = () => {
   $('#js-new-bookmark-form').on('click', '#cancel', event => {
     event.preventDefault();
-    console.log('Cancle button clicked');
     store.adding = false;
     render();
   });

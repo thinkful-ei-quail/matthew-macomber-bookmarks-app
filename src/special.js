@@ -20,7 +20,6 @@ const specialEvent = () => {
       kkeys.push( e.keyCode );
       if ( kkeys.toString().indexOf( konami ) >= 0 )  {
         kkeys = [];
-        alert('Konami code.');
         $('.user').html(generateSpecial());
       }
     }, true);
@@ -30,9 +29,7 @@ const specialEvent = () => {
 const handleSpecialInput = () => {
   $('.user').on('click', '#specialBtn', event => {
     event.preventDefault();
-    alert($('#specialVal').val());
     api.user = api.changeUser($('#specialVal').val());
-    console.log(api.user);
     $('.user').html('');
     api.getBookmarks()
       .then((items) => {
