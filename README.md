@@ -1,5 +1,7 @@
 # matthew-macomber-bookmarks-app
 
+The Bookmarks App is a simple app for saving links to websites, with a easy 1-5 star rating and optional descripion for each bookmark.
+
 Live GH Pages: https://thinkful-ei-quail.github.io/matthew-macomber-bookmarks-app/
 
 As a user:
