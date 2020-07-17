@@ -19,7 +19,7 @@ body {
   margin: 0 auto;
   font-weight: bolder;
   margin-top: 5%;
-  font-size: 3em;
+  font-size: 48px;
   display: flex;
   flex-direction: column;
   background: rgb(222,222,255);
@@ -217,10 +217,10 @@ ul li {
   width: 10em;
 }
 
-.open-bookmark-url span {
+/*.open-bookmark-url span {
   font-size: 1.5em;
   color:blue;
-}
+}*/
 
 .open-bookmark .open-bookmark-desc {
   height: 5em;
@@ -243,7 +243,35 @@ ul li {
 .open-bookmark-url {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
+
+
+.ratingNumStar {
+  position: relative;
+  width: 50px;
+  height: 50px;
+
+}
+
+.ratingNum, .ratingStar{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ratingNum {
+  z-index: 1;
+  font-size: 3rem;
+  color: red;
+  padding-top: 8px;
+}
+
+.ratingStar {
+  font-size: 9rem;
+}
+
 
 @media all and (min-width: 985px) {
   .container {
