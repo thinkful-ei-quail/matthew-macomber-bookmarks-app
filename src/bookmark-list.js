@@ -19,6 +19,24 @@ const getBookmarkIdFromElement = bookmark => {
 };
 
 // Functions to generate HTML for rendering.
+const generateHomePage = () => {
+  return `
+    <header>
+      <h1>My Bookmarks</h1>
+    </header>
+    <div class="user"></div>
+    <div class="error-container">Error!</div>
+    <form class="standards new-bookmark-form" id="js-new-bookmark-form">
+    </form>
+    <form class="standards bookmark-list-form" id="js-bookmark-list-form">
+    </form>
+    <form class="standards bookmark-filter-form" id="js-bookmark-filter-form">
+    </form>
+    <ul class="standards bookmarks-list" id="js-bookmarks-list">
+    </ul>
+    `;
+};
+
 const generateBookmarkElement = bookmark => {
   if (bookmark.expanded){
     return generateOpenBookmarkElement(bookmark);
@@ -127,17 +145,17 @@ const generateFilterForm= () => {
   return `
     <div>
       <div>Min Rating:</div>
-      <fieldset>
+      <fieldset aria-label="Minimum rating selection:">
         <span class="star-cb-group">
-          <input type="radio" id="rating-5" name="filterRating" value="5"${starFive}/>
+          <input type="radio" id="rating-5" name="filterRating" value="5"${starFive} aria-label="Minimum rating of Five stars."/>
           <label for="rating-5">5</label>
-          <input type="radio" id="rating-4" name="filterRating" value="4"${starFour}/>
+          <input type="radio" id="rating-4" name="filterRating" value="4"${starFour} aria-label="Minimum rating of Four stars."/>
           <label for="rating-4">4</label>
-          <input type="radio" id="rating-3" name="filterRating" value="3"${starThree}/>
+          <input type="radio" id="rating-3" name="filterRating" value="3"${starThree} aria-label="Minimum rating of Three stars."/>
           <label for="rating-3">3</label>
-          <input type="radio" id="rating-2" name="filterRating" value="2"${starTwo}/>
+          <input type="radio" id="rating-2" name="filterRating" value="2"${starTwo} aria-label="Minimum rating of Two stars."/>
           <label for="rating-2">2</label>
-          <input type="radio" id="rating-1" name="filterRating" value="1"${starOne}/>
+          <input type="radio" id="rating-1" name="filterRating" value="1"${starOne} aria-label="Minimum rating of One stars."/>
           <label for="rating-1">1</label>
           <input type="radio" id="rating-0" name="filterRating" value="0" class="star-cb-clear"/>
           <label for="rating-0">0</label>
@@ -149,10 +167,10 @@ const generateFilterForm= () => {
 
 const generateBookmarkListForm = () => {
   return `
-    <input type="submit" name="New Bookmark" value="+ New"/>
-    <select name="Filter By" id="filter">
+    <input type="submit" name="New Bookmark" value="+ New" aria-label="Create a new bookmark button."/>
+    <select name="Filter By" id="filter" aria-label="Select a filter to use.">
         <option value="" selected disabled hidden>Filter By</option>
-        <option value="rating">Minimum Rating</option>
+        <option value="rating" aria-label="Filter bookmarks by a minimum rating.">Minimum Rating</option>
     </select>
   `;
 };
@@ -173,6 +191,10 @@ const generateError = message => {
 };
 
 // Functions to handle rendering to the DOM.
+const renderHomePage = () => {
+  $('main').html(generateHomePage());
+};
+
 const renderError = () => {
   if (store.error) {
     const errorElement = generateError(store.error);
@@ -321,6 +343,7 @@ const bindEventListeners = () => {
 };
 
 export default {
+  renderHomePage,
   render,
-  bindEventListeners
+  bindEventListeners,
 };

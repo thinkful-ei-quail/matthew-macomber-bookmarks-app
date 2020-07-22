@@ -8,6 +8,8 @@ import special from './special';
 
 
 const main = () => {
+  bookmarkList.renderHomePage();
+
   api.getBookmarks()
     .then((items) => {
       items.forEach((item) => store.addBookmark(item));
