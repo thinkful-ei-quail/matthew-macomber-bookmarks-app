@@ -61,9 +61,9 @@ const generateClosedBookmarkElement = bookmark => {
   }
   let rating = `${starOne} ${starTwo} ${starThree} ${starFour} ${starFive}`;
   return `
-    <li class="js-bookmark-element closed-bookmark" data-bookmark-id="${bookmark.id}">
+    <li class="js-bookmark-element closed-bookmark" data-bookmark-id="${bookmark.id}" tabindex="0" aria-label="Closed Bookmark, click/enter to view.">
       <div>${bookmark.title}</div>
-      <div class="rating">
+      <div class="rating" aria-label="The rating of this bookmark is ${bookmark.rating}/5.">
         ${rating}
       </div>
     </li>
@@ -72,15 +72,15 @@ const generateClosedBookmarkElement = bookmark => {
 
 const generateOpenBookmarkElement = bookmark => {
   return `
-  <li class="js-bookmark-element open-bookmark" data-bookmark-id="${bookmark.id}">
+  <li class="js-bookmark-element open-bookmark" data-bookmark-id="${bookmark.id}" aria-label="Open Bookmark, open different bookmark to close.">
     <section class="open-bookmark-title-bar">
       <div>${bookmark.title}</div>
-      <button class="js-delete-button btn">
+      <button class="js-delete-button btn" aria-label="Delete '${bookmark.title}' bookmark.">
         🗑
       </button>
     </section>
     <div class="open-bookmark-url">
-      <a href="${bookmark.url}"><button>Visit Site</button></a><div class="ratingNumStar"><div class="ratingNum">${bookmark.rating}</div><div class="ratingStar">&bigstar;</div></div>
+      <a href="${bookmark.url}"><button aria-label="Button to go to '${bookmark.url}'.">Visit Site</button></a><div class="ratingNumStar"><div class="ratingNum"aria-label="The rating of this bookmark out of 5 stars.">${bookmark.rating}</div><div class="ratingStar">&bigstar;</div></div>
     </div>
     <div class="open-bookmark-desc">
       ${bookmark.desc}
@@ -92,22 +92,22 @@ const generateOpenBookmarkElement = bookmark => {
 const generateCreateBookmarkElement = () => {
   return `
     <label for="newURL">Add New Bookmark</label>
-    <input type="url" name="newURL" id="newURL" placeholder="http://example.com"/>
-    <input type="text" name="newTitle" id="newTitle" placeholder="My Example Title"/>
+    <input type="url" name="newURL" id="newURL" placeholder="http://example.com" aria-label="Enter the URL of the bookmark here."/>
+    <input type="text" name="newTitle" id="newTitle" placeholder="My Example Title" aria-label="Enter the title of the bookmark here."/>
     <div class="newRating-form">
       <label id="ratingLabel" for="newRating">Rating:</label>
       <fieldset>
-        <span class="star-cb-group">
+        <span class="star-cb-group" aria-label="Press enter to select highlighted rating.">
           <input type="radio" id="rating-5" name="newRating" value="5"/>
-          <label for="rating-5">5</label>
+          <label for="rating-5" tabindex="0">5</label>
           <input type="radio" id="rating-4" name="newRating" value="4"/>
-          <label for="rating-4">4</label>
+          <label for="rating-4" tabindex="0">4</label>
           <input type="radio" id="rating-3" name="newRating" value="3"/>
-          <label for="rating-3">3</label>
+          <label for="rating-3" tabindex="0">3</label>
           <input type="radio" id="rating-2" name="newRating" value="2"/>
-          <label for="rating-2">2</label>
+          <label for="rating-2" tabindex="0">2</label>
           <input type="radio" id="rating-1" name="newRating" value="1" checked="checked"/>
-          <label for="rating-1">1</label>
+          <label for="rating-1" tabindex="0">1</label>
           <input type="radio" id="rating-0" name="newRating" value="0" class="star-cb-clear"/>
           <label for="rating-0">0</label>
         </span>
@@ -285,6 +285,13 @@ const handleCreateSubmit = () => {
       renderError();
     }
   });
+  // Handle changes to rating via keyboard.
+  $('#js-new-bookmark-form').on('keypress', '.star-cb-group',event => {
+    //change current selected rating star.
+    if (event.which === 13) {
+      $('#js-new-bookmark-form').find('#' + event.target.getAttribute('for')).prop('checked', true);
+    }
+  });
 };
 
 const handleDeleteBookmarkClicked = () => {
@@ -310,6 +317,17 @@ const handleViewBookmarkClick = () => {
     if (!currentBookmark.expanded) {
       currentBookmark.expanded = true;
       render();
+    }
+  });
+  $('#js-bookmarks-list').keypress(event => {
+    if (event.which === 13){
+      const bookmarkID = getBookmarkIdFromElement(event.target);
+      const currentBookmark = store.findById(bookmarkID);
+      store.closeAllBookmarks();
+      if (!currentBookmark.expanded) {
+        currentBookmark.expanded = true;
+        render();
+      }
     }
   });
 };
