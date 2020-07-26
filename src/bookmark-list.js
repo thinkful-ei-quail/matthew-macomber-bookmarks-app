@@ -145,18 +145,18 @@ const generateFilterForm= () => {
   return `
     <div>
       <div>Min Rating:</div>
-      <fieldset aria-label="Minimum rating selection:">
+      <fieldset aria-label="Minimum rating selection (press enter to select):">
         <span class="star-cb-group">
           <input type="radio" id="rating-5" name="filterRating" value="5"${starFive} aria-label="Minimum rating of Five stars."/>
-          <label for="rating-5">5</label>
+          <label for="rating-5" tabindex="0" value="5">5</label>
           <input type="radio" id="rating-4" name="filterRating" value="4"${starFour} aria-label="Minimum rating of Four stars."/>
-          <label for="rating-4">4</label>
+          <label for="rating-4" tabindex="0" value="4">4</label>
           <input type="radio" id="rating-3" name="filterRating" value="3"${starThree} aria-label="Minimum rating of Three stars."/>
-          <label for="rating-3">3</label>
+          <label for="rating-3" tabindex="0" value="3">3</label>
           <input type="radio" id="rating-2" name="filterRating" value="2"${starTwo} aria-label="Minimum rating of Two stars."/>
-          <label for="rating-2">2</label>
+          <label for="rating-2" tabindex="0" value="2">2</label>
           <input type="radio" id="rating-1" name="filterRating" value="1"${starOne} aria-label="Minimum rating of One stars."/>
-          <label for="rating-1">1</label>
+          <label for="rating-1" tabindex="0" value="1">1</label>
           <input type="radio" id="rating-0" name="filterRating" value="0" class="star-cb-clear"/>
           <label for="rating-0">0</label>
         </span>
@@ -343,6 +343,16 @@ const handleFilterByRating = () => {
   $('#js-bookmark-filter-form').on('click', 'input', event => {
     store.filterRating = parseInt($(event.target).val());
     render();
+  });
+  // Handle keyboard inputs.
+  $('#js-bookmark-filter-form').on('keypress', '.star-cb-group',event => {
+    //change current selected rating star.
+    if (event.which === 13) {
+      //$('#js-bookmark-filter-form').find('#' + event.target.getAttribute('for')).prop('checked', true);
+      console.log(event.target.getAttribute('value'));
+      store.filterRating = parseInt(event.target.getAttribute('value'));
+      render();
+    }
   });
 };
 
