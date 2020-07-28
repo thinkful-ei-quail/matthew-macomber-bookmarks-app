@@ -184,7 +184,7 @@ const generateError = message => {
   return `
     <section class="error-content">
       ${message}
-      <button id="close-error">X</button>
+      <button id="close-error">Close Error</button>
     </section>
   `;
 };
@@ -264,6 +264,7 @@ const handleCreateSubmit = () => {
     try {
       bookmark.validateName(newBookmark['newTitle']);
       bookmark.validateUrl(newBookmark['newURL']);
+      console.log('passed url validation');
       const formatedBookmark = {
         'title' : newBookmark['newTitle'],
         'url' : newBookmark['newURL'],
@@ -277,7 +278,8 @@ const handleCreateSubmit = () => {
           render();
         })
         .catch(error => {
-          new Error(error.message);
+          store.error = store.setError(error.message);
+          renderError();
         });
     } catch (error) {
       store.error = store.setError(error.message);

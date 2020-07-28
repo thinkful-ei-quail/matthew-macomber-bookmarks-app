@@ -26,6 +26,10 @@ body {
   background: linear-gradient(0deg, rgba(222,222,255,1) 0%, rgba(213,248,255,1) 50%, rgba(222,222,255,1) 100%);
 }
 
+.error-content {
+  color: red;
+}
+
 .standards {
   display: flex;
   flex-direction: column;
