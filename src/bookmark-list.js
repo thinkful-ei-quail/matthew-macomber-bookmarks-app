@@ -61,7 +61,7 @@ const generateClosedBookmarkElement = bookmark => {
   }
   let rating = `${starOne} ${starTwo} ${starThree} ${starFour} ${starFive}`;
   return `
-    <li class="js-bookmark-element closed-bookmark" data-bookmark-id="${bookmark.id}" tabindex="0" aria-label="Closed Bookmark, click/enter to view.">
+    <li class="js-bookmark-element closed-bookmark" data-bookmark-id="${bookmark.id}" tabindex="0" aria-label="closed bookmark">
       <div>${bookmark.title}</div>
       <div class="rating" aria-label="The rating of this bookmark is ${bookmark.rating}/5.">
         ${rating}
@@ -72,7 +72,7 @@ const generateClosedBookmarkElement = bookmark => {
 
 const generateOpenBookmarkElement = bookmark => {
   return `
-  <li class="js-bookmark-element open-bookmark" data-bookmark-id="${bookmark.id}" aria-label="Open Bookmark, open different bookmark to close.">
+  <li class="js-bookmark-element open-bookmark" data-bookmark-id="${bookmark.id}" aria-label="open bookmark">
     <section class="open-bookmark-title-bar">
       <div>${bookmark.title}</div>
       <button class="js-delete-button btn" aria-label="Delete '${bookmark.title}' bookmark.">
@@ -97,7 +97,7 @@ const generateCreateBookmarkElement = () => {
     <div class="newRating-form">
       <label id="ratingLabel" for="newRating">Rating:</label>
       <fieldset>
-        <span class="star-cb-group" aria-label="Press enter to select highlighted rating.">
+        <span class="star-cb-group" aria-label="select rating">
           <input type="radio" id="rating-5" name="newRating" value="5"/>
           <label for="rating-5" tabindex="0">5</label>
           <input type="radio" id="rating-4" name="newRating" value="4"/>
@@ -122,8 +122,7 @@ const generateCreateBookmarkElement = () => {
 };
 
 const generateFilterForm= () => {
-  let starOne, starTwo, starThree, starFour, starFive;
-  starOne, starTwo, starThree, starFour, starFive = '';
+  let starOne = '', starTwo = '', starThree = '', starFour = '', starFive = '';
   switch(store.filterRating)
   {
   case 1:
@@ -167,10 +166,10 @@ const generateFilterForm= () => {
 
 const generateBookmarkListForm = () => {
   return `
-    <input type="submit" name="New Bookmark" value="+ New" aria-label="Create a new bookmark button."/>
-    <select name="Filter By" id="filter" aria-label="Select a filter to use.">
+    <input type="submit" name="New Bookmark" value="+ New" aria-label="New Bookmark"/>
+    <select name="Filter By" id="filter" aria-label="filters">
         <option value="" selected disabled hidden>Filter By</option>
-        <option value="rating" aria-label="Filter bookmarks by a minimum rating.">Minimum Rating</option>
+        <option value="rating">Minimum Rating</option>
     </select>
   `;
 };
