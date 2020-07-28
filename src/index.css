@@ -28,6 +28,9 @@ body {
 
 .error-content {
   color: red;
+  border: black;
+  border-style: solid;
+  border-width: 3px;
 }
 
 .standards {

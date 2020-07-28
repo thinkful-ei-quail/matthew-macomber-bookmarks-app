@@ -80,7 +80,7 @@ const generateOpenBookmarkElement = bookmark => {
       </button>
     </section>
     <div class="open-bookmark-url">
-      <a href="${bookmark.url}"><button aria-label="Button to go to '${bookmark.url}'.">Visit Site</button></a><div class="ratingNumStar"><div class="ratingNum"aria-label="The rating of this bookmark out of 5 stars.">${bookmark.rating}</div><div class="ratingStar">&bigstar;</div></div>
+      <a href="${bookmark.url}" target="_blank"><button aria-label="Button to go to '${bookmark.url}'.">Visit Site</button></a><div class="ratingNumStar"><div class="ratingNum"aria-label="The rating of this bookmark out of 5 stars.">${bookmark.rating}</div><div class="ratingStar">&bigstar;</div></div>
     </div>
     <div class="open-bookmark-desc">
       ${bookmark.desc}
@@ -183,8 +183,8 @@ const generateBookmarksHtml = bookmarkList => {
 const generateError = message => {
   return `
     <section class="error-content">
-      ${message}
       <button id="close-error">Close Error</button>
+      ${message}
     </section>
   `;
 };
